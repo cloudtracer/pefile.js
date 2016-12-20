@@ -1,0 +1,23 @@
+{
+  "name": "pefile.js",
+  "version": "1.0.0",
+  "description": "This project attempts to replicate the functionality of pefile.py in pure javascript for use in NodeJS and the browser. It supports imphash generation and import library parsing currently.",
+  "main": "pefile.js",
+  "dependencies": {
+    "circular-json": "^0.3.1",
+    "ssdeep.js": "^0.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pefile",
+    "binary",
+    "reverse",
+    "engineering",
+    "kaitai"
+  ],
+  "author": "ThreatPinch <development@threatpinch.com> (https://twitter.com/ThreatPinch)",
+  "license": "GPL-3.0"
+}
