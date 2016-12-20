@@ -65,7 +65,7 @@
       <div class="panel-body">
 
         <div id="">
-          <form id="dropzonediv" action="files" class="dropzone">
+          <form id="dropzonediv" action="#" class="dropzone">
               <div class="fallback">
                   <input type="file" name="file" multiple />
               </div>
@@ -82,9 +82,10 @@
   </div>
   <script>
   Dropzone.autoDiscover = false;
+  Dropzone.autoProcessQueue = false;
     var myDropzone = new Dropzone("#dropzonediv");
     myDropzone.on("addedfile", function(file) {
-      /* Maybe display some more file information on your page */
+      alert(file)
     });
 
   </script>
