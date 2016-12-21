@@ -1,17 +1,16 @@
-var KaitaiStream = require("./KaitaiStream.js")
+Pefile = (function() {
 
-var TextDecoder = require('text-encoding').TextDecoder;
-var ssdeep = require("ssdeep.js");
-var md5 = require('js-md5');
-var sha256 = require('js-sha256');
-
-var exts = ['ocx', 'sys', 'dll'];
-var oleauth32_ord_names = {}
-var ws2_32_ord_names = {}
-
-var Pefile = (function() {
-
+  var TextDecoder = require('text-encoding').TextDecoder;
+  var ssdeep = require("ssdeep.js");
+  var md5 = require('js-md5');
+  var sha256 = require('js-sha256');
+  var exts = ['ocx', 'sys', 'dll'];
+  var oleauth32_ord_names = {}
+  var ws2_32_ord_names = {}
   function Pefile(_io, _parent, _root) {
+    var KaitaiStream = require("./KaitaiStream.js")
+
+
     var ke = new KaitaiStream(_io);
     this._io = ke;
     this._parent = _parent;

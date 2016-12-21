@@ -21,6 +21,7 @@
     <link href="css/jsoneditor.css" rel="stylesheet" type="text/css">
     <script src="js/jsoneditor.js"></script>
     <script src="js/dropzone.js"></script>
+    <script src="js/pefile.js"></script>
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -60,14 +61,14 @@
       </div>
       <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>Upload</h3>
+        <h3 class="panel-title"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Upload</h3>
       </div>
       <div class="panel-body">
 
         <div id="">
           <form id="dropzonediv" action="#" class="dropzone">
               <div class="fallback">
-                  <input type="file" name="file" multiple />
+                  <input id="files" type="file" name="file" multiple />
               </div>
               <p>
               You can drag'n'drop a file anywhere here or click below to select a file
@@ -78,14 +79,46 @@
           <div id="previews" class="dropzone-previews"></div>
         </div>
       </div>
+      <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Results</h3>
+      </div>
+      <div class="panel-body">
+        <pre id="results"></pre>
+      </div>
     </div>
   </div>
   <script>
+  function getArrayBuffer(file) {
+      return new Promise(function (resolve, reject) {
+          var reader = new FileReader();
+
+          reader.onloadend = function (e) {
+              resolve(e.target.result);
+          };
+          reader.onerror = function (e) {
+              reject(e.target.error);
+          };
+          reader.readAsArrayBuffer(file);
+      });
+  }
   Dropzone.autoDiscover = false;
   Dropzone.autoProcessQueue = false;
     var myDropzone = new Dropzone("#dropzonediv");
+    Dropzone.prototype.submitRequest = function (xhr, formData, files) {
+    getArrayBuffer(files[0]).then(function (buffer) {
+      console.dir(window);
+
+            var pefile = new Pefile(buffer);
+            //console.log(pefile.dump_info())
+            document.querySelector("#results").innerHTML = pefile.dump_info();
+
+        }.bind(this));
+    };
+
     myDropzone.on("addedfile", function(file) {
-      alert(file)
+      //alert(JSON.stringify(file))
+      //readBlob();
     });
 
   </script>
