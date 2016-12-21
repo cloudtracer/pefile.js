@@ -492,23 +492,23 @@ Pefile = (function() {
       var idata_size = pefile.optionalHeader.dataDirs.importTable.size;
       if(idata_size){
         for(i = 0; i < pefile.sections.length; i++){
-          //console.log("MD5:", md5(body));
-          //console.log("SHA2:", sha256(body));
-          //console.log("ssdeep:", ssdeep.digest(body));
-          //console.log(body);
-          //console.log(pefile.sections[i]);
+          ////console.log("MD5:", md5(body));
+          ////console.log("SHA2:", sha256(body));
+          ////console.log("ssdeep:", ssdeep.digest(body));
+          ////console.log(body);
+          ////console.log(pefile.sections[i]);
           if(pefile.sections[i].VirtualAddress <= idata
             &&  (pefile.sections[i].VirtualAddress + pefile.sections[i].Misc_VirtualSize) >= idata ){
-              console.log("Import data in ", pefile.sections[i].Name, 'section');
+              //console.log("Import data in ", pefile.sections[i].Name, 'section');
               var pointer = (parseInt(pefile.sections[i].PointerToRawData / 0x200)) * 0x200;
               var va = pefile.sections[i].VirtualAddress;
               if (pefile.optionalHeader.IMAGE_OPTIONAL_HEADER.SectionAlignment && (idata % pefile.optionalHeader.IMAGE_OPTIONAL_HEADER.SectionAlignment)){
                 valll = pefile.optionalHeader.IMAGE_OPTIONAL_HEADER.SectionAlignment * ( parseInt(va / pefile.optionalHeader.IMAGE_OPTIONAL_HEADER.SectionAlignment) )
-                console.log("Something weird?", va, 'new', valll);
+                //console.log("Something weird?", va, 'new', valll);
                 //va = pefile.optionalHeader.IMAGE_OPTIONAL_HEADER.SectionAlignment * ( parseInt(va / pefile.optionalHeader.IMAGE_OPTIONAL_HEADER.SectionAlignment) )
               }
               idata_raw = GetOffset(idata, va, pefile.sections[i].PointerToRawData, pefile);
-              console.log("Import table at:", idata_raw);
+              //console.log("Import table at:", idata_raw);
               pefile._io.seek(idata_raw);
               //pefile._io.pos = pefile._io.pos;
               var read_size = 0;
@@ -567,8 +567,8 @@ Pefile = (function() {
                   0x6B88     0xC   Name:                          0x939A
                   0x6B8C     0x10  FirstThunk:                    0x82A0
                   */
-                  //console.log()
-                  //console.log(addresses);
+                  ////console.log()
+                  ////console.log(addresses);
 
                   directory_entry_import_addr.push(addresses);
                   directory_entry_import.push(values);
@@ -615,7 +615,7 @@ Pefile = (function() {
                   array.push(IMAGE_IMPORT_DESCRIPTOR);
 
                 } else {
-                  console.log("Uhoh!");
+                  //console.log("Uhoh!");
                 }
                read_size += 20;
             }
@@ -642,35 +642,35 @@ Pefile = (function() {
 
   function GetOffset(va, va_offset, pointer, pefile){
 
-    console.log("Inbound VA:", va, 'Offset:', va_offset, 'Pointer:', pointer)
+    //console.log("Inbound VA:", va, 'Offset:', va_offset, 'Pointer:', pointer)
     var rva = (va - va_offset) + pointer;
     if(rva < 0){
 
       va_offset = GetOffsetFromVA(va, pefile, va_offset);
-      //console.log("")
+      ////console.log("")
       rva = (va - va_offset) + pointer;
       if(rva < 0) rva = va_offset;
-      console.log("RAW:", va, 'RVA:', rva)
-      console.log("READJUST:", va, 'RVA:', rva);
+      //console.log("RAW:", va, 'RVA:', rva)
+      //console.log("READJUST:", va, 'RVA:', rva);
 
 
     }
-    console.log("VA:", '0x'+parseInt(va,16), 'RVA:', '0x'+parseInt(rva,16))
+    //console.log("VA:", '0x'+parseInt(va,16), 'RVA:', '0x'+parseInt(rva,16))
     return rva;
   }
 
   function GetOffsetFromVA(va, pefile, last){
     var offset = last;
-    console.log("Get Offset")
+    //console.log("Get Offset")
     for(t = 0; t < pefile.sections.length; t++){
-      //console.log("MD5:", md5(body));
-      //console.log("SHA2:", sha256(body));
-      //console.log("ssdeep:", ssdeep.digest(body));
-      //console.log(body);
-      //console.log(pefile.sections[i]);
+      ////console.log("MD5:", md5(body));
+      ////console.log("SHA2:", sha256(body));
+      ////console.log("ssdeep:", ssdeep.digest(body));
+      ////console.log(body);
+      ////console.log(pefile.sections[i]);
       if(pefile.sections[i].VirtualAddress <= va  &&  (pefile.sections[i].VirtualAddress + pefile.sections[i].Misc_VirtualSize) >= va ){
           offset = pefile.sections[t].PointerToRawData;
-          console.log("New offset:", offset)
+          //console.log("New offset:", offset)
       }
     }
     return offset;
@@ -680,8 +680,8 @@ Pefile = (function() {
     var before_pos = pefile._io.pos;
     pefile._io.seek(raw_location);
     var name = pefile._io.readStrz('utf-8', '0');
-    //console.log('Import Name - VA:', virtual_address, '0x'+parseInt(virtual_address,16), name)
-    //console.log('Import Name - RVA:', raw_location, '0x'+parseInt(raw_location,16), name);
+    ////console.log('Import Name - VA:', virtual_address, '0x'+parseInt(virtual_address,16), name)
+    ////console.log('Import Name - RVA:', raw_location, '0x'+parseInt(raw_location,16), name);
     pefile._io.seek(before_pos);
     return name;
   }
@@ -698,7 +698,7 @@ Pefile = (function() {
     while(continue_loop){
       pointer1 = pefile._io.readU2le();
       pointer2 = pefile._io.readU2le();
-      console.log("pointers:", pointer1, pointer1.toString(16), "prev:", pointer2,pointer2 ? pointer2.toString(16): pointer2 );
+      //console.log("pointers:", pointer1, pointer1.toString(16), "prev:", pointer2,pointer2 ? pointer2.toString(16): pointer2 );
       if(pointer1 == 0 && pointer2 == 0) {
         continue_loop = false;
       }
@@ -707,7 +707,7 @@ Pefile = (function() {
           var dothispointer;
           if(pointer2 && pointer2 != 0 ){
             var temp = pointer2 << 16;
-            console.log("Adding previous pointer:", temp, pointer1)
+            //console.log("Adding previous pointer:", temp, pointer1)
             dothispointer = temp + pointer1;
             clear_previous = true;
 
@@ -738,7 +738,7 @@ Pefile = (function() {
     while(continue_loop){
       pointer1 = pefile._io.readU2le();
       pointer2 = pefile._io.readU2le();
-      console.log("pointers:", pointer1, pointer1.toString(16), "prev:", pointer2,pointer2 ? pointer2.toString(16): pointer2 );
+      //console.log("pointers:", pointer1, pointer1.toString(16), "prev:", pointer2,pointer2 ? pointer2.toString(16): pointer2 );
       if(pointer1 == 0 && pointer2 == 0) {
         continue_loop = false;
       }
@@ -747,7 +747,7 @@ Pefile = (function() {
           var dothispointer;
           if(pointer2 && pointer2 != 0 ){
             var temp = pointer2 << 16;
-            console.log("Adding previous pointer:", temp, pointer1)
+            //console.log("Adding previous pointer:", temp, pointer1)
             dothispointer = temp + pointer1;
             clear_previous = true;
 
@@ -761,9 +761,9 @@ Pefile = (function() {
         }
       }
     }
-    //console.log('Import array of pointers - VA:', virtual_address, '0x'+virtual_address.toString(16))
-    //console.log('Import array of pointers - RVA:', raw_location, '0x'+raw_location.toString(16), JSON.stringify(array_of_pointers));
-    //console.log('Functions:', JSON.stringify(array_of_values));
+    ////console.log('Import array of pointers - VA:', virtual_address, '0x'+virtual_address.toString(16))
+    ////console.log('Import array of pointers - RVA:', raw_location, '0x'+raw_location.toString(16), JSON.stringify(array_of_pointers));
+    ////console.log('Functions:', JSON.stringify(array_of_values));
     pefile._io.seek(before_pos);
     return {pointers: array_of_pointers, values: array_of_values};
   }
@@ -783,10 +783,10 @@ Pefile = (function() {
     var clear_previous = false;
     while(continue_loop){
       pointer = pefile._io.readU2le();
-      console.log("pointers:", pointer, pointer.toString(16), "prev:", previous_pointer,previous_pointer ? previous_pointer.toString(16): previous_pointer );
+      //console.log("pointers:", pointer, pointer.toString(16), "prev:", previous_pointer,previous_pointer ? previous_pointer.toString(16): previous_pointer );
       var previous_pointer
       if(pointer == 0) {
-        //console.log("hit null:", pointer);
+        ////console.log("hit null:", pointer);
         if(previous_pointer == 0) continue_loop = false;
       }
       if(continue_loop && (pointer != 0) ) {
@@ -794,7 +794,7 @@ Pefile = (function() {
           var dothispointer;
           if(previous_pointer && previous_pointer != 0 && previous_pointer != 32768){
             var temp = pointer << 16;
-            console.log("Adding previous pointer:", temp, previous_pointer)
+            //console.log("Adding previous pointer:", temp, previous_pointer)
             dothispointer = temp + previous_pointer;
             clear_previous = true;
           } else {
@@ -813,9 +813,9 @@ Pefile = (function() {
 
       }
     }
-    console.log('Import array of pointers - VA:', virtual_address, '0x'+virtual_address.toString(16))
-    //console.log('Import array of pointers - RVA:', raw_location, '0x'+raw_location.toString(16), JSON.stringify(array_of_pointers));
-    //console.log('Hints:', JSON.stringify(array_of_values));
+    //console.log('Import array of pointers - VA:', virtual_address, '0x'+virtual_address.toString(16))
+    ////console.log('Import array of pointers - RVA:', raw_location, '0x'+raw_location.toString(16), JSON.stringify(array_of_pointers));
+    ////console.log('Hints:', JSON.stringify(array_of_values));
     pefile._io.seek(before_pos);
     return {pointers: array_of_pointers, values: array_of_values};
   }
@@ -832,9 +832,9 @@ Pefile = (function() {
     var clear_previous = false;
     while(continue_loop){
       pointer = pefile._io.readU2le();
-      console.log("pointers:", pointer, pointer.toString(16), "prev:", previous_pointer,previous_pointer ? previous_pointer.toString(16): previous_pointer );
+      //console.log("pointers:", pointer, pointer.toString(16), "prev:", previous_pointer,previous_pointer ? previous_pointer.toString(16): previous_pointer );
       if(pointer == 0) {
-        //console.log("hit null:", pointer);
+        ////console.log("hit null:", pointer);
         if(previous_pointer == 0 ) continue_loop = false;
       }
       if(continue_loop && (pointer != 0) ) {
@@ -842,7 +842,7 @@ Pefile = (function() {
           var dothispointer;
           if(previous_pointer && previous_pointer != 0 ){
             var temp = pointer << 16;
-            console.log("Adding previous pointer:", temp, previous_pointer)
+            //console.log("Adding previous pointer:", temp, previous_pointer)
             dothispointer = temp + previous_pointer;
             clear_previous = true;
 
@@ -864,29 +864,29 @@ Pefile = (function() {
 
       }
     }
-    //console.log('Import array of pointers - VA:', virtual_address, '0x'+virtual_address.toString(16))
-    //console.log('Import array of pointers - RVA:', raw_location, '0x'+raw_location.toString(16), JSON.stringify(array_of_pointers));
-    //console.log('Functions:', JSON.stringify(array_of_values));
+    ////console.log('Import array of pointers - VA:', virtual_address, '0x'+virtual_address.toString(16))
+    ////console.log('Import array of pointers - RVA:', raw_location, '0x'+raw_location.toString(16), JSON.stringify(array_of_pointers));
+    ////console.log('Functions:', JSON.stringify(array_of_values));
     pefile._io.seek(before_pos);
     return {pointers: array_of_pointers, values: array_of_values};
   }
   */
 
   function ReadHintFromPointer(pointer, pefile){
-    console.log("ReadHintFromPointer:", pointer, pointer.toString(16))
+    //console.log("ReadHintFromPointer:", pointer, pointer.toString(16))
     var before_pos = pefile._io.pos;
     var raw_location = GetOffset(pointer, pefile.IMPORT_SECTION_VIRTUAL_ADDRESS, pefile.IMPORT_SECTION_POINTER_TO_RAW, pefile);
-    console.log("ReadHintFromPointer raw_location:", raw_location, raw_location.toString(16))
+    //console.log("ReadHintFromPointer raw_location:", raw_location, raw_location.toString(16))
     pefile._io.seek(raw_location);
 
     var value = pefile._io.readU2le();
-    console.log("loc", raw_location, ", val:", value.toString(16).toUpperCase(), 'pointer:', pointer.toString(16).toUpperCase())
+    //console.log("loc", raw_location, ", val:", value.toString(16).toUpperCase(), 'pointer:', pointer.toString(16).toUpperCase())
     pefile._io.seek(before_pos);
     return value;
   }
 
   function ReadFunctionFromPointer(pointer, pefile){
-    console.log("ReadFunctionFromPointer:", pointer, pointer.toString(16))
+    //console.log("ReadFunctionFromPointer:", pointer, pointer.toString(16))
     var before_pos = pefile._io.pos;
     var value;
     if(pointer > 32768){
@@ -894,7 +894,7 @@ Pefile = (function() {
       raw_location = raw_location;
       pefile._io.seek(raw_location);
       var check_ordinal = pefile._io.readU2le();
-      console.log("ORD: loc", raw_location.toString(16).toUpperCase(), ", ord:", check_ordinal, check_ordinal.toString(16).toUpperCase(), 'pointer:', pointer.toString(16).toUpperCase())
+      //console.log("ORD: loc", raw_location.toString(16).toUpperCase(), ", ord:", check_ordinal, check_ordinal.toString(16).toUpperCase(), 'pointer:', pointer.toString(16).toUpperCase())
 
       var is_ordinal = (check_ordinal > 32768) ? true : false;
       if(is_ordinal){
@@ -902,7 +902,7 @@ Pefile = (function() {
 
         */
         value = pefile._io.readStrz('ASCII', '0');;
-        console.log("check ordinal: " + check_ordinal)
+        //console.log("check ordinal: " + check_ordinal)
       } else {
         value = pefile._io.readStrz('ASCII', '0');
       }
