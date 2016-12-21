@@ -29,5 +29,13 @@
     "kaitai"
   ],
   "author": "ThreatPinch <development@threatpinch.com> (https://twitter.com/ThreatPinch)",
-  "license": "GPL-3.0"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cloudtracer/pefile.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cloudtracer/pefile.js/issues"
+  },
+  "homepage": "https://github.com/cloudtracer/pefile.js#readme"
 }
