@@ -158,17 +158,20 @@
     Dropzone.autoProcessQueue = false;
     var myDropzone = new Dropzone("#dropzonediv");
     Dropzone.prototype.submitRequest = function (xhr, formData, files) {
-    getArrayBuffer(files[files.length+1).then(function (buffer) {
-            try{
-              var pefile = new Pefile(buffer);
-              //console.log(pefile.dump_info())
-              document.querySelector("#results").innerHTML = pefile.dump_info();
-            } catch (err){
-              document.querySelector("#results").innerHTML = "Error: File could not be parsed."
-            }
+    if(files && files.length > 0){
+      getArrayBuffer(files[files.length -1]).then(function (buffer) {
+              try{
+                var pefile = new Pefile(buffer);
+                //console.log(pefile.dump_info())
+                document.querySelector("#results").innerHTML = pefile.dump_info();
+              } catch (err){
+                document.querySelector("#results").innerHTML = "Error: File could not be parsed."
+              }
 
 
-        }.bind(this));
+          }.bind(this));
+    }
+
     };
 
     myDropzone.on("addedfile", function(file) {
