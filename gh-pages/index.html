@@ -158,7 +158,7 @@
     Dropzone.autoProcessQueue = false;
     var myDropzone = new Dropzone("#dropzonediv");
     Dropzone.prototype.submitRequest = function (xhr, formData, files) {
-    getArrayBuffer(files[0]).then(function (buffer) {
+    getArrayBuffer(files[files.length+1).then(function (buffer) {
             try{
               var pefile = new Pefile(buffer);
               //console.log(pefile.dump_info())
